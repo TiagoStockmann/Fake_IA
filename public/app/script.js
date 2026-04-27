@@ -57,11 +57,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const openSidebar  = () => {
     sidebar.classList.add("is-open");
     backdrop.classList.add("is-open");
+    document.body.classList.add("no-scroll");
     menuBtn?.setAttribute("aria-expanded", "true");
   };
   const closeSidebar = () => {
     sidebar.classList.remove("is-open");
     backdrop.classList.remove("is-open");
+    document.body.classList.remove("no-scroll");
     menuBtn?.setAttribute("aria-expanded", "false");
   };
 
