@@ -1,16 +1,21 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+/**
+ * fake.ia — App estático servido a partir de /public/app/
+ * Substituímos a página inicial do projeto por um redirect imediato
+ * para /app/index.html, que contém o HTML/CSS/JS originais (modernizados).
+ * Backend (webhook n8n) permanece inalterado.
+ */
+const Index = () => {
+  useEffect(() => {
+    window.location.replace("/app/index.html");
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0a0613", color: "#F4F1FF", fontFamily: "system-ui" }}>
+      <p>Carregando fake.ia…</p>
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
