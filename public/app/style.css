@@ -220,9 +220,9 @@ body {
 /* Liquid sheen overlay */
 .sidebar::before {
   content: ""; position: absolute; inset: 0;
-  background: var(--glass-highlight);
+  background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0) 55%);
   pointer-events: none; border-radius: inherit;
-  mix-blend-mode: screen; opacity: 0.5;
+  opacity: 1;
   z-index: 0;
 }
 .sidebar > * { position: relative; z-index: 1; }
@@ -357,9 +357,9 @@ body {
 }
 .main::before {
   content: ""; position: absolute; inset: 0;
-  background: var(--glass-highlight);
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0) 55%);
   pointer-events: none; border-radius: inherit;
-  mix-blend-mode: screen; opacity: 0.7;
+  opacity: 1;
   z-index: 0;
 }
 .main > * { position: relative; z-index: 1; }
