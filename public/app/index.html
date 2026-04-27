@@ -13,7 +13,7 @@
     href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter+Tight:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
 
@@ -30,8 +30,18 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
     <div class="mobile-logo">
-      <span class="star-mark star-mark--sm" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><defs><linearGradient id="starGradMobile" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="var(--accent)"/><stop offset="50%" stop-color="var(--accent-2)"/><stop offset="100%" stop-color="var(--accent-3)"/></linearGradient></defs><path d="M12 2l2.9 7.05L22 9.74l-5.5 4.78L18.18 22 12 18.27 5.82 22l1.68-7.48L2 9.74l7.1-.69L12 2z" fill="url(#starGradMobile)"/></svg>
+      <span class="brand-mark brand-mark--sm" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none">
+          <defs>
+            <linearGradient id="shieldGradMobile" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--accent)"/>
+              <stop offset="55%" stop-color="var(--accent-2)"/>
+              <stop offset="100%" stop-color="var(--accent-3)"/>
+            </linearGradient>
+          </defs>
+          <path d="M16 3 L27 7 V15 C27 22 22 27 16 29 C10 27 5 22 5 15 V7 Z" fill="url(#shieldGradMobile)"/>
+          <path d="M11 16 L14.5 19.5 L21 12.5" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
       </span>
       <span class="logo-text">fake<em>.ia</em></span>
     </div>
@@ -46,17 +56,23 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar" aria-label="Navegação lateral">
       <div class="sidebar-logo">
-        <span class="star-mark" aria-hidden="true">
-          <span class="star-halo"></span>
-          <svg viewBox="0 0 24 24">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-halo"></span>
+          <svg viewBox="0 0 32 32" fill="none">
             <defs>
-              <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="var(--accent)"/>
                 <stop offset="55%" stop-color="var(--accent-2)"/>
                 <stop offset="100%" stop-color="var(--accent-3)"/>
               </linearGradient>
+              <linearGradient id="shieldShine" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="white" stop-opacity="0.55"/>
+                <stop offset="60%" stop-color="white" stop-opacity="0"/>
+              </linearGradient>
             </defs>
-            <path d="M12 2l2.9 7.05L22 9.74l-5.5 4.78L18.18 22 12 18.27 5.82 22l1.68-7.48L2 9.74l7.1-.69L12 2z" fill="url(#starGrad)"/>
+            <path d="M16 3 L27 7 V15 C27 22 22 27 16 29 C10 27 5 22 5 15 V7 Z" fill="url(#shieldGrad)"/>
+            <path d="M16 3 L27 7 V15 C27 22 22 27 16 29 C10 27 5 22 5 15 V7 Z" fill="url(#shieldShine)"/>
+            <path d="M11 16 L14.5 19.5 L21 12.5" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
         <span class="logo-text">fake<em>.ia</em></span>
@@ -121,7 +137,7 @@
         <div class="messages" id="messages">
           <div class="msg bot initial-msg">
             <div class="msg-avatar bot-avatar">
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1L12.5 7H19L14 11.5L16 18L10 14L4 18L6 11.5L1 7H7.5L10 1Z"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L20 5 V11 C20 16.5 16.5 20.5 12 22 C7.5 20.5 4 16.5 4 11 V5 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>
             </div>
             <div class="msg-content">
               <p>Olá 👋 Bem-vindo ao <strong>fake.ia</strong>.</p>

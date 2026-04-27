@@ -57,11 +57,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const openSidebar  = () => {
     sidebar.classList.add("is-open");
     backdrop.classList.add("is-open");
+    document.body.classList.add("no-scroll");
     menuBtn?.setAttribute("aria-expanded", "true");
   };
   const closeSidebar = () => {
     sidebar.classList.remove("is-open");
     backdrop.classList.remove("is-open");
+    document.body.classList.remove("no-scroll");
     menuBtn?.setAttribute("aria-expanded", "false");
   };
 
@@ -157,7 +159,7 @@ function renderResultado(texto) {
 
   const avatar = document.createElement("div");
   avatar.className = "msg-avatar bot-avatar";
-  avatar.innerHTML = '<svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1L12.5 7H19L14 11.5L16 18L10 14L4 18L6 11.5L1 7H7.5L10 1Z"/></svg>';
+  avatar.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L20 5 V11 C20 16.5 16.5 20.5 12 22 C7.5 20.5 4 16.5 4 11 V5 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>';
 
   const content = document.createElement("div");
   content.className = "msg-content";
@@ -228,7 +230,7 @@ function addMsg(texto, tipo) {
   const avatar = document.createElement("div");
   if (tipo === "bot") {
     avatar.className = "msg-avatar bot-avatar";
-    avatar.innerHTML = '<svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1L12.5 7H19L14 11.5L16 18L10 14L4 18L6 11.5L1 7H7.5L10 1Z"/></svg>';
+    avatar.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L20 5 V11 C20 16.5 16.5 20.5 12 22 C7.5 20.5 4 16.5 4 11 V5 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>';
   } else {
     avatar.className = "msg-avatar user-avatar";
     avatar.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
@@ -261,7 +263,7 @@ function addLoadingBubble() {
 
   const avatar = document.createElement("div");
   avatar.className = "msg-avatar bot-avatar";
-  avatar.innerHTML = '<svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1L12.5 7H19L14 11.5L16 18L10 14L4 18L6 11.5L1 7H7.5L10 1Z"/></svg>';
+  avatar.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L20 5 V11 C20 16.5 16.5 20.5 12 22 C7.5 20.5 4 16.5 4 11 V5 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>';
 
   const content = document.createElement("div");
   content.className = "msg-content";
