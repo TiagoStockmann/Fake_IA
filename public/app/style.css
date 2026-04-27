@@ -665,13 +665,17 @@ kbd {
   [data-theme="light"] .sidebar {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(245, 243, 255, 0.96));
   }
+  /* Sem sheen no mobile drawer (impede leitura) */
+  .sidebar::before { display: none; }
   /* Reforço de contraste do texto no drawer */
   .sidebar .sidebar-desc,
-  .sidebar .tip-list li { color: rgba(228, 222, 255, 0.85); }
-  .sidebar .sidebar-label { color: rgba(228, 222, 255, 0.55); }
+  .sidebar .tip-list li { color: rgba(244, 241, 255, 0.92); }
+  .sidebar .sidebar-label { color: rgba(244, 241, 255, 0.6); }
+  .sidebar .stat-key { color: rgba(244, 241, 255, 0.7); }
   [data-theme="light"] .sidebar .sidebar-desc,
-  [data-theme="light"] .sidebar .tip-list li { color: rgba(30, 27, 58, 0.78); }
+  [data-theme="light"] .sidebar .tip-list li { color: rgba(30, 27, 58, 0.82); }
   [data-theme="light"] .sidebar .sidebar-label { color: rgba(30, 27, 58, 0.55); }
+  [data-theme="light"] .sidebar .stat-key { color: rgba(30, 27, 58, 0.65); }
   .sidebar.is-open { transform: translateX(0); }
   .sidebar-backdrop { z-index: 45; }
   .sidebar-backdrop.is-open { display: block; }
