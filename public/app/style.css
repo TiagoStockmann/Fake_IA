@@ -222,7 +222,8 @@ body {
   content: ""; position: absolute; inset: 0;
   background: var(--glass-highlight);
   pointer-events: none; border-radius: inherit;
-  mix-blend-mode: screen; opacity: 0.9;
+  mix-blend-mode: screen; opacity: 0.5;
+  z-index: 0;
 }
 .sidebar > * { position: relative; z-index: 1; }
 .sidebar { overflow-y: auto; }
