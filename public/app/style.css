@@ -14,17 +14,21 @@
   --success:       #10B981;
   --danger:        #F43F5E;
 
-  /* ---------- DARK (default) ---------- */
+  /* ---------- DARK (default) — LIQUID GLASS ---------- */
   --bg:            #0a0613;
   --bg-2:          #0f0a1f;
-  --surface:       rgba(20, 14, 38, 0.55);
-  --surface-2:     rgba(15, 10, 31, 0.65);
-  --surface-3:     rgba(255, 255, 255, 0.04);
+  --surface:       rgba(22, 16, 42, 0.38);
+  --surface-2:     rgba(16, 11, 33, 0.45);
+  --surface-3:     rgba(255, 255, 255, 0.05);
   --surface-solid: #120a26;
 
-  --border:        rgba(255, 255, 255, 0.08);
-  --border-hover:  rgba(139, 92, 246, 0.35);
-  --border-strong: rgba(255, 255, 255, 0.14);
+  --border:        rgba(255, 255, 255, 0.10);
+  --border-hover:  rgba(139, 92, 246, 0.45);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  /* Liquid Glass — brilhos internos */
+  --glass-highlight: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 35%, rgba(255,255,255,0) 60%);
+  --glass-inset: inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(255,255,255,0.04), inset 1px 0 0 rgba(255,255,255,0.06);
 
   --text-primary:   #F4F1FF;
   --text-secondary: rgba(228, 222, 255, 0.62);
@@ -66,14 +70,17 @@
 [data-theme="light"] {
   --bg:            #F5F3FF;
   --bg-2:          #ECE6FF;
-  --surface:       rgba(255, 255, 255, 0.7);
-  --surface-2:     rgba(255, 255, 255, 0.55);
+  --surface:       rgba(255, 255, 255, 0.55);
+  --surface-2:     rgba(255, 255, 255, 0.45);
   --surface-3:     rgba(139, 92, 246, 0.06);
   --surface-solid: #FFFFFF;
 
-  --border:        rgba(30, 27, 75, 0.08);
-  --border-hover:  rgba(139, 92, 246, 0.4);
-  --border-strong: rgba(30, 27, 75, 0.14);
+  --border:        rgba(30, 27, 75, 0.10);
+  --border-hover:  rgba(139, 92, 246, 0.45);
+  --border-strong: rgba(30, 27, 75, 0.16);
+
+  --glass-highlight: linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.15) 35%, rgba(255,255,255,0) 60%);
+  --glass-inset: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 -1px 0 rgba(30,27,58,0.04), inset 1px 0 0 rgba(255,255,255,0.4);
 
   --text-primary:   #1E1B3A;
   --text-secondary: rgba(30, 27, 58, 0.65);
