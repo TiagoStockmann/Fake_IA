@@ -1,5 +1,10 @@
 const WEBHOOK_URL = "https://stockmann.app.n8n.cloud/webhook/fakenews";
 
+function logout() {
+  localStorage.removeItem("fakeia_user");
+  window.location.replace("login.html");
+}
+
 /* ============================================================
    TEMA (DARK / LIGHT)
    ============================================================ */
