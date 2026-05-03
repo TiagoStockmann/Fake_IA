@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0a0613" />
   <meta name="description" content="fake.ia — Verificador de notícias com inteligência artificial em tempo real." />
   <title>fake.ia — Verificador de Notícias com IA</title>
+  <script>if(!localStorage.getItem("fakeia_user")){window.location.replace("login.html");}</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter+Tight:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="style.css?v=6" />
+  <link rel="stylesheet" href="style.css?v=7" />
 </head>
 <body>
 
@@ -108,11 +109,19 @@
       </div>
 
       <div class="sidebar-footer">
+        <div class="user-info" id="userInfo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="displayUser"></span>
+        </div>
         <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Alternar tema">
           <span class="theme-icon" id="themeIcon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </span>
           <span id="themeLabel">Modo claro</span>
+        </button>
+        <button class="theme-btn" onclick="logout()" aria-label="Sair">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sair</span>
         </button>
       </div>
     </aside>

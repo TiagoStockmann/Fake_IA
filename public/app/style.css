@@ -732,3 +732,14 @@ kbd {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* User info in sidebar */
+.user-info {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  background: var(--surface-3); color: var(--text-secondary);
+  font-size: 0.82rem; font-weight: 500;
+  margin-bottom: 6px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.user-info svg { flex-shrink: 0; opacity: 0.6; }

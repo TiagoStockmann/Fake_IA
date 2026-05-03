@@ -8,7 +8,7 @@ import { useEffect } from "react";
  */
 const Index = () => {
   useEffect(() => {
-    window.location.replace("/app/index.html");
+    window.location.replace("/app/login.html");
   }, []);
 
   return (
