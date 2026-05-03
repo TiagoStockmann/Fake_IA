@@ -743,3 +743,85 @@ kbd {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .user-info svg { flex-shrink: 0; opacity: 0.6; }
+
+/* ── Thinking / Loading Animation ── */
+.loading-content {
+  display: flex !important; align-items: center;
+}
+
+.thinking-animation {
+  display: flex; align-items: center; gap: 16px; padding: 4px 0;
+}
+
+.thinking-brain {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; flex-shrink: 0;
+  color: var(--accent);
+}
+
+.thinking-brain svg {
+  animation: brain-pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+@keyframes brain-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.thinking-rings {
+  position: absolute; inset: 0;
+}
+
+.thinking-rings span {
+  position: absolute; inset: 0;
+  border: 1.5px solid transparent;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: ring-spin 1.6s linear infinite;
+}
+
+.thinking-rings span:nth-child(2) {
+  inset: -4px;
+  border-top-color: var(--accent-2);
+  animation-duration: 2.2s;
+  animation-direction: reverse;
+}
+
+.thinking-rings span:nth-child(3) {
+  inset: -8px;
+  border-top-color: var(--accent-3);
+  animation-duration: 3s;
+  opacity: 0.5;
+}
+
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+.thinking-text-area {
+  display: flex; flex-direction: column; gap: 8px; min-width: 140px;
+}
+
+.thinking-label {
+  font-size: 0.88rem; font-weight: 500; color: var(--text-primary);
+  transition: opacity 0.3s ease;
+}
+
+.thinking-bar {
+  height: 3px; border-radius: 3px; background: var(--surface-3);
+  overflow: hidden; width: 160px;
+}
+
+.thinking-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3), var(--accent-2));
+  background-size: 200% 100%;
+  animation: bar-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes bar-shimmer {
+  0% { width: 10%; background-position: 0% 0%; }
+  50% { width: 70%; background-position: 100% 0%; }
+  100% { width: 10%; background-position: 0% 0%; }
+}
