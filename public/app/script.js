@@ -1,8 +1,4 @@
-/* ============================================================
-   fake.ia — script.js
-   ⚠️ BACKEND/INTEGRAÇÃO n8n NÃO ALTERADOS
-   ============================================================ */
-const WEBHOOK_URL = "https://stockmann.app.n8n.cloud/webhook-test/fakenews";
+const WEBHOOK_URL = "https://stockmann.app.n8n.cloud/webhook/fakenews";
 
 /* ============================================================
    TEMA (DARK / LIGHT)
@@ -46,6 +42,41 @@ window.addEventListener("DOMContentLoaded", () => {
   textarea.addEventListener("input", () => {
     updateCharCount();
     autoGrow(textarea);
+  });
+
+  /* ── Upload de imagem via botão ── */
+  const fileInput = document.getElementById("fileInput");
+  fileInput?.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) handleImageFile(file);
+    fileInput.value = ""; // reset para permitir reenviar o mesmo arquivo
+  });
+
+  /* ── Drag & Drop na área de chat ── */
+  const chatArea = document.getElementById("messages");
+  chatArea?.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    chatArea.classList.add("drag-over");
+  });
+  chatArea?.addEventListener("dragleave", () => chatArea.classList.remove("drag-over"));
+  chatArea?.addEventListener("drop", (e) => {
+    e.preventDefault();
+    chatArea.classList.remove("drag-over");
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) handleImageFile(file);
+  });
+
+  /* ── Colar imagem com Ctrl+V ── */
+  document.addEventListener("paste", (e) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith("image/")) {
+        e.preventDefault();
+        handleImageFile(item.getAsFile());
+        break;
+      }
+    }
   });
 
   /* Sidebar mobile */
@@ -102,7 +133,75 @@ function handleKeydown(e) {
 }
 
 /* ============================================================
-   VERIFICAR — LÓGICA PRINCIPAL (back-end INALTERADO)
+   HANDLER DE IMAGEM — converte para base64 e envia
+   ============================================================ */
+function handleImageFile(file) {
+  if (!file.type.startsWith("image/")) {
+    alert("Apenas arquivos de imagem são suportados.");
+    return;
+  }
+
+  const MAX_MB = 5;
+  if (file.size > MAX_MB * 1024 * 1024) {
+    alert(`A imagem deve ter no máximo ${MAX_MB}MB.`);
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const base64 = e.target.result; // "data:image/png;base64,..."
+    addImageMsg(base64, "user");
+    enviarImagem(base64, file.name, file.type);
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ============================================================
+   ENVIAR IMAGEM AO WEBHOOK
+   ============================================================ */
+async function enviarImagem(base64, nome, mimeType) {
+  const sendBtn = document.getElementById("sendBtn");
+  sendBtn.disabled = true;
+
+  const loading = addLoadingBubble();
+
+  try {
+    const res = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        texto: base64,      // campo "texto" mantido para compatibilidade com o n8n
+        tipo: "imagem",
+        nomeArquivo: nome,
+        mimeType
+      })
+    });
+
+    if (!res.ok) throw new Error("Erro na resposta do servidor");
+
+    const data = await res.text();
+    loading.remove();
+
+    let respostaFinal;
+    try {
+      const jsonParsed = JSON.parse(data);
+      respostaFinal = jsonParsed.text || jsonParsed.resposta || data;
+    } catch {
+      respostaFinal = data;
+    }
+
+    renderResultado(respostaFinal);
+  } catch (error) {
+    loading.remove();
+    console.error("Erro:", error);
+    addMsg("⚠️ Não foi possível conectar ao servidor. Verifique se o workflow está ativo e tente novamente.", "bot");
+  } finally {
+    sendBtn.disabled = false;
+  }
+}
+
+/* ============================================================
+   VERIFICAR — LÓGICA PRINCIPAL (texto / url)
    ============================================================ */
 async function verificar() {
   const textarea = document.getElementById("texto");
@@ -120,7 +219,6 @@ async function verificar() {
   const loading = addLoadingBubble();
 
   try {
-    /* ---- CHAMADA AO WEBHOOK n8n — INALTERADA ---- */
     const res = await fetch(WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -188,6 +286,34 @@ function renderResultado(texto) {
 }
 
 /* ============================================================
+   ADICIONAR MENSAGEM DE IMAGEM (preview no chat)
+   ============================================================ */
+function addImageMsg(base64, tipo) {
+  const messages = document.getElementById("messages");
+  const msgDiv   = document.createElement("div");
+  msgDiv.className = "msg " + tipo;
+
+  const avatar = document.createElement("div");
+  avatar.className = "msg-avatar user-avatar";
+  avatar.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+
+  const content = document.createElement("div");
+  content.className = "msg-content";
+
+  const img = document.createElement("img");
+  img.src = base64;
+  img.alt = "Imagem enviada";
+  img.style.cssText = "max-width:260px;max-height:200px;border-radius:10px;display:block;";
+
+  content.appendChild(img);
+  msgDiv.appendChild(avatar);
+  msgDiv.appendChild(content);
+  messages.appendChild(msgDiv);
+  messages.scrollTop = messages.scrollHeight;
+  return msgDiv;
+}
+
+/* ============================================================
    COPIAR TEXTO
    ============================================================ */
 function copiarTexto(btn, texto) {
@@ -220,7 +346,7 @@ function copiarTexto(btn, texto) {
 }
 
 /* ============================================================
-   ADICIONAR MENSAGEM
+   ADICIONAR MENSAGEM (texto/bot)
    ============================================================ */
 function addMsg(texto, tipo) {
   const messages = document.getElementById("messages");
