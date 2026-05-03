@@ -37,6 +37,11 @@ window.addEventListener("DOMContentLoaded", () => {
     label.textContent = "Modo escuro";
   }
 
+  /* Exibir nome do usuário */
+  const user = localStorage.getItem("fakeia_user");
+  const displayEl = document.getElementById("displayUser");
+  if (displayEl && user) displayEl.textContent = user;
+
   /* Contador + auto-resize do textarea */
   const textarea = document.getElementById("texto");
   textarea.addEventListener("input", () => {
