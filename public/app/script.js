@@ -402,17 +402,50 @@ function addLoadingBubble() {
   avatar.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L20 5 V11 C20 16.5 16.5 20.5 12 22 C7.5 20.5 4 16.5 4 11 V5 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>';
 
   const content = document.createElement("div");
-  content.className = "msg-content";
+  content.className = "msg-content loading-content";
+
+  const phrases = ["Analisando conteúdo", "Verificando fontes", "Cruzando dados", "Processando resultado"];
+  let phraseIdx = 0;
+
   content.innerHTML = `
-    <div class="spinner"></div>
-    <span>Analisando notícia</span>
-    <div class="loading-dots"><span></span><span></span><span></span></div>
+    <div class="thinking-animation">
+      <div class="thinking-brain">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a4 4 0 0 1 4 4v1a3 3 0 0 1 2 5.24V13a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6v-.76A3 3 0 0 1 7 7V6a4 4 0 0 1 4-4z" class="brain-path"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+        <div class="thinking-rings">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="thinking-text-area">
+        <span class="thinking-label" id="thinkingLabel">Analisando conteúdo</span>
+        <div class="thinking-bar"><div class="thinking-bar-fill"></div></div>
+      </div>
+    </div>
   `;
 
   msgDiv.appendChild(avatar);
   msgDiv.appendChild(content);
   messages.appendChild(msgDiv);
   messages.scrollTop = messages.scrollHeight;
+
+  const labelEl = content.querySelector("#thinkingLabel");
+  const interval = setInterval(() => {
+    phraseIdx = (phraseIdx + 1) % phrases.length;
+    labelEl.style.opacity = "0";
+    setTimeout(() => {
+      labelEl.textContent = phrases[phraseIdx];
+      labelEl.style.opacity = "1";
+    }, 300);
+  }, 2500);
+
+  msgDiv._interval = interval;
+  const origRemove = msgDiv.remove.bind(msgDiv);
+  msgDiv.remove = () => { clearInterval(interval); origRemove(); };
+
   return msgDiv;
 }
 
