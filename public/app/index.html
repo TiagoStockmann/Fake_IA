@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter+Tight:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="style.css?v=9" />
 </head>
 <body>
 
@@ -94,7 +94,19 @@
         </ul>
       </div>
 
+      <div class="sidebar-section" style="padding-bottom:4px;">
+        <p class="sidebar-label">Histórico</p>
+        <button class="new-chat-btn" onclick="newChat()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nova conversa
+        </button>
+      </div>
 
+      <div class="history-section" id="historySection">
+        <ul class="history-list" id="historyList">
+          <li class="history-empty">Nenhuma conversa ainda</li>
+        </ul>
+      </div>
 
       <div class="sidebar-footer">
         <div class="user-info" id="userInfo">
