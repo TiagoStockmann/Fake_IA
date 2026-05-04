@@ -218,7 +218,7 @@ body {
   z-index: 0;
 }
 .sidebar > * { position: relative; z-index: 1; }
-.sidebar { overflow-y: auto; }
+.sidebar { overflow: hidden; }
 
 .sidebar-logo {
   display: flex; align-items: center; gap: 12px;
