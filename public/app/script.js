@@ -425,3 +425,91 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+/* ============================================================
+   HISTÓRICO DE CONVERSAS (localStorage por username)
+   ============================================================ */
+function getHistoryKey() {
+  const user = localStorage.getItem("fakeia_user");
+  return user ? `fakeia_history_${user}` : null;
+}
+
+function getHistory() {
+  const key = getHistoryKey();
+  if (!key) return [];
+  try { return JSON.parse(localStorage.getItem(key) || "[]"); }
+  catch { return []; }
+}
+
+function saveToHistory(pergunta, resposta) {
+  const key = getHistoryKey();
+  if (!key) return;
+  const history = getHistory();
+  history.unshift({
+    id: Date.now(),
+    pergunta: pergunta.substring(0, 300),
+    resposta: resposta.substring(0, 500),
+    criado_em: new Date().toISOString()
+  });
+  if (history.length > 50) history.length = 50;
+  localStorage.setItem(key, JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById("historyList");
+  if (!list) return;
+  const history = getHistory();
+  if (history.length === 0) {
+    list.innerHTML = '<li class="history-empty">Nenhuma conversa ainda</li>';
+    return;
+  }
+  list.innerHTML = history.map(item => {
+    const date = new Date(item.criado_em);
+    const dateStr = date.toLocaleDateString("pt-BR", { day:"2-digit", month:"short", hour:"2-digit", minute:"2-digit" });
+    const preview = item.pergunta.length > 60 ? item.pergunta.substring(0, 60) + "…" : item.pergunta;
+    return `<li class="history-item" onclick="loadConversation(${item.id})">
+      <div class="history-item-question">${escapeHtml(preview)}</div>
+      <div class="history-item-date">${dateStr}</div>
+    </li>`;
+  }).join("");
+}
+
+function loadConversation(id) {
+  const history = getHistory();
+  const item = history.find(h => h.id === id);
+  if (!item) return;
+  const messages = document.getElementById("messages");
+  messages.innerHTML = "";
+  addMsg(item.pergunta, "user");
+  renderResultado(item.resposta);
+
+  // Close sidebar on mobile
+  const sidebar = document.getElementById("sidebar");
+  const backdrop = document.getElementById("sidebarBackdrop");
+  sidebar?.classList.remove("is-open");
+  backdrop?.classList.remove("is-open");
+  document.body.classList.remove("no-scroll");
+}
+
+function newChat() {
+  const messages = document.getElementById("messages");
+  messages.innerHTML = `
+    <div class="msg bot initial-msg">
+      <div class="msg-avatar bot-avatar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L20 5 V11 C20 16.5 16.5 20.5 12 22 C7.5 20.5 4 16.5 4 11 V5 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>
+      </div>
+      <div class="msg-content">
+        <p>Olá 👋 Bem-vindo ao <strong>fake.ia</strong>.</p>
+        <p>Cole qualquer notícia, URL ou <strong>imagem</strong> abaixo e eu analisarei se é verdadeira ou falsa com base em padrões identificados em notícias falsas.</p>
+      </div>
+    </div>
+  `;
+
+  // Close sidebar on mobile
+  const sidebar = document.getElementById("sidebar");
+  const backdrop = document.getElementById("sidebarBackdrop");
+  sidebar?.classList.remove("is-open");
+  backdrop?.classList.remove("is-open");
+  document.body.classList.remove("no-scroll");
+}
