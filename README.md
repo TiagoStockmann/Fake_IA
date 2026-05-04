@@ -12,6 +12,7 @@
 - [Fluxo do Workflow n8n](#fluxo-do-workflow-n8n)
 - [Frontend — Aurora Glamour UI](#frontend--aurora-glamour-ui)
 - [Backend — Webhook n8n](#backend--webhook-n8n)
+- [Prompt do Agente de IA](#prompt-do-agente-de-ia)
 - [Banco de Dados](#banco-de-dados)
 - [Como Usar](#como-usar)
 - [Exemplo de Requisição](#exemplo-de-requisição)
@@ -23,7 +24,7 @@
 
 ## Sobre o Projeto
 
-O **FakeAI** é um sistema completo de verificação de notícias e detecção de desinformação desenvolvido como projeto acadêmico. O sistema permite que o usuário envie uma notícia em formato de **texto**, **link (URL)** ou **imagem (print/screenshot)**, e recebe de volta uma análise detalhada baseada em metodologias de fact-checking profissional, como as utilizadas pela **Agência Lupa**, **AFP Checamos** e **Aos Fatos**.
+O **FakeAI** é um sistema completo de verificação de notícias e detecção de desinformação desenvolvido como projeto acadêmico. O sistema permite que o usuário envie uma notícia em formato de **texto**, **link (URL)** ou **imagem (print/screenshot)**, e recebe de volta uma análise detalhada baseada em metodologias de fact-checking profissional, como as utilizadas pela **Agência Lupa**, **AFP Checamos** e **Aos Fatos** — todas certificadas pela **IFCN (International Fact-Checking Network)**.
 
 A interface gráfica (**Aurora Glamour UI**) se comunica com um workflow automatizado no **n8n**, que processa o conteúdo, aciona um agente de IA (**GPT-4o-mini**) e persiste o histórico de análises em um banco de dados **PostgreSQL**.
 
@@ -32,11 +33,13 @@ A interface gráfica (**Aurora Glamour UI**) se comunica com um workflow automat
 ## Funcionalidades
 
 - ✅ Análise de notícias em **texto livre**
-- ✅ Análise de notícias via **URL/link** (com extração automática do conteúdo)
+- ✅ Análise de notícias via **URL/link** (com extração automática do conteúdo via Jina.ai)
 - ✅ Análise de notícias via **imagem ou print** (base64)
 - ✅ Classificação em **REAL**, **SUSPEITA** ou **FAKE NEWS**
 - ✅ Pontuação de probabilidade de ser fake (0 a 100%)
+- ✅ Raciocínio em cadeia (Chain-of-Thought) com 7 passos de análise antes da conclusão
 - ✅ Identificação dos critérios que indicaram desinformação
+- ✅ Indicação de fontes confiáveis para verificação independente
 - ✅ Histórico de análises salvo por usuário no banco de dados
 - ✅ Identificação de usuário por nome (suporte a múltiplos usuários)
 
@@ -58,6 +61,7 @@ A interface gráfica (**Aurora Glamour UI**) se comunica com um workflow automat
                                                              │  tabela: fakeiadb    │
                                                              └─────────────────────┘
 ```
+
 <img width="1408" height="768" alt="Workflowgeral" src="https://github.com/user-attachments/assets/c6b30201-7f69-47fd-9ac1-594aa30b9a41" />
 
 ---
@@ -112,8 +116,6 @@ Preserva user  │                                                          │
 ```
 
 <img width="1408" height="768" alt="Fluxon8n" src="https://github.com/user-attachments/assets/eb9d25ae-6cd1-4c85-aeb1-ed37f4748913" />
-
-
 
 ### Descrição de Cada Nó
 
@@ -190,11 +192,40 @@ Quando o tipo é `url`, o workflow usa o serviço **Jina.ai Reader** (`https://r
 
 ### Análise por IA
 
-O **AI Agent** usa o modelo **GPT-4o-mini** da OpenAI com um prompt de sistema robusto que define:
+O **AI Agent** usa o modelo **GPT-4o-mini** da OpenAI com um prompt de sistema robusto baseado em metodologias IFCN, que guia o modelo através de **7 passos de raciocínio em cadeia (Chain-of-Thought)** antes de emitir qualquer classificação — detalhado na seção abaixo.
 
-- **8 critérios de análise** (linguagem sensacionalista, ausência de fontes, manipulação emocional, falta de evidências, incoerência factual, pedido de compartilhamento, domínio suspeito, padrão visual suspeito)
-- **Pontuação e classificação:** 0–2 critérios = REAL | 3–5 = SUSPEITA | 6+ = FAKE NEWS
-- **Formato de resposta estruturado** com probabilidade, evidências e recomendações
+---
+
+## Prompt do Agente de IA
+
+O agente utiliza um prompt otimizado com as seguintes características:
+
+- **Metodologia IFCN**: baseado nos padrões de apartidarismo, transparência de fontes e transparência metodológica das agências certificadas (Lupa, Aos Fatos, AFP Checamos)
+- **Chain-of-Thought (7 passos)**: o modelo percorre extração da afirmação central → análise de linguagem → verificação de fontes → verificação factual → análise de domínio → pontuação de critérios → calibração de probabilidade — antes de emitir qualquer veredicto
+- **Base de fontes explícita**: o modelo consulta mentalmente Agência Lupa, Aos Fatos, AFP Checamos, Boatos.org, G1 Fato ou Fake, Estadão Verifica, Reuters Fact Check, FactCheck.org, OMS, IBGE e portais `.gov.br`
+- **Probabilidade calibrada**: independente da contagem de critérios, evitando falsos positivos mecânicos
+- **Resposta estruturada e educativa**: formatada para ser clara e acessível ao usuário final
+
+### Critérios de Análise (8 critérios)
+
+| Código | Critério |
+|---|---|
+| C1 | Linguagem sensacionalista ou alarmista |
+| C2 | Ausência de fontes identificáveis |
+| C3 | Manipulação emocional explícita |
+| C4 | Afirmações sem evidências verificáveis |
+| C5 | Incoerência factual com dados conhecidos |
+| C6 | Pedido de compartilhamento urgente |
+| C7 | Domínio suspeito ou desconhecido |
+| C8 | Padrão visual ou textual de montagem |
+
+### Escala de Classificação
+
+| Critérios Identificados | Classificação |
+|---|---|
+| 0 – 2 | ✅ REAL |
+| 3 – 5 | ⚠️ SUSPEITA |
+| 6 ou mais | ❌ FAKE NEWS |
 
 ---
 
@@ -271,37 +302,55 @@ curl -X POST https://<sua-instancia-n8n>/webhook/fakenews \
 ## Exemplo de Resposta
 
 ```
+🔍 ANÁLISE FAKEAI
+
 Usuário: joao
 
-Fonte do conteúdo: Texto fornecido diretamente pelo usuário
+Fonte: Texto fornecido diretamente pelo usuário
 Veículo identificado: Não identificado
 Data de publicação: Não identificada
-Tipo de conteúdo analisado: TEXTO
+Tipo de conteúdo: TEXTO
 
-Classificação: FAKE NEWS
-Probabilidade de ser fake: 92%
+Afirmação central analisada:
+O texto afirma que o governo brasileiro irá confiscar poupanças "nesta semana",
+pedindo compartilhamento urgente antes que a informação "seja apagada".
+
+────────────────────────────────────────
+🏷️ Classificação: FAKE NEWS ❌
+📊 Probabilidade de ser falso: 97%
+────────────────────────────────────────
 
 Critérios identificados:
-* [C1] Linguagem sensacionalista — uso de "URGENTE" em caixa alta
-* [C2] Ausência de fontes confiáveis
-* [C3] Manipulação emocional
-* [C6] Pedido de compartilhamento explícito
+• [C1] Linguagem sensacionalista — uso de "URGENTE" em caixa alta, tom catastrófico
+• [C2] Ausência de fontes — nenhuma fonte oficial, veículo ou documento citado
+• [C3] Manipulação emocional — apelo ao medo financeiro com urgência artificial
+• [C4] Sem evidências — afirmação grave sem qualquer dado, lei ou portaria
+• [C6] Pedido de compartilhamento — "Compartilhe antes que apaguem!" é padrão clássico de desinformação
 
-Evidências no texto:
-["URGENTE! Governo vai confiscar poupanças nesta semana!"]
-["Compartilhe antes que apaguem!"]
+Trechos suspeitos no conteúdo:
+"URGENTE! Governo vai confiscar poupanças nesta semana!"
+"Compartilhe antes que apaguem!"
 
-Explicação geral:
-O texto utiliza linguagem alarmista típica de desinformação financeira. A ausência total
-de fontes, o apelo ao compartilhamento urgente e a afirmação catastrófica sem embasamento
-são indicadores clássicos de fake news.
+────────────────────────────────────────
+Explicação:
+O conteúdo apresenta cinco dos oito critérios clássicos de desinformação. A afirmação
+sobre confisco de poupanças é uma narrativa recorrente em períodos de instabilidade
+política e não possui respaldo em nenhuma medida legal vigente. A ausência total de
+fontes, combinada com o apelo urgente ao compartilhamento antes que a informação
+"suma", é um padrão deliberado para impedir que o leitor verifique a informação antes
+de repassá-la.
 
-Fonte confiável para verificação:
-Banco Central do Brasil — https://www.bcb.gov.br
+────────────────────────────────────────
+Como verificar você mesmo:
+• Banco Central do Brasil: https://www.bcb.gov.br
+• Aos Fatos: https://aosfatos.org
+• Agência Lupa: https://lupa.uol.com.br
+• G1 Fato ou Fake: https://g1.globo.com/fato-ou-fake
 
+────────────────────────────────────────
 Recomendação:
-Não compartilhe esta mensagem. Consulte fontes oficiais como o Banco Central
-e agências de fact-checking antes de repassar informações financeiras.
+Não compartilhe esta mensagem. Consulte o Banco Central e as agências de
+fact-checking antes de repassar qualquer informação sobre medidas econômicas.
 ```
 
 ---
@@ -331,6 +380,7 @@ O endpoint `/webhook/fakenews` está aberto sem nenhum tipo de autenticação (t
 |---|---|---|
 | Adicionar nó de busca do histórico no Postgres antes do AI Agent | Alta — ativa a memória real por usuário | Alta |
 | Adicionar tratamento de erro em todos os nós críticos | Alta — evita falhas silenciosas | Alta |
+| Ativar o workflow (`active: true`) | Necessário para funcionar | Alta |
 | Adicionar autenticação no webhook (header token) | Alta — segurança | Média |
 | Consolidar a lógica de detecção de tipo em um único nó | Média — simplifica manutenção | Média |
 | Adicionar rate limiting por usuário | Média — evita abuso | Média |
@@ -348,6 +398,7 @@ O endpoint `/webhook/fakenews` está aberto sem nenhum tipo de autenticação (t
 | **Inteligência Artificial** | OpenAI GPT-4o-mini (via LangChain no n8n) |
 | **Extração de conteúdo web** | Jina.ai Reader API |
 | **Banco de Dados** | PostgreSQL |
+| **Metodologia de fact-checking** | IFCN, Agência Lupa, Aos Fatos, AFP Checamos |
 | **Comunicação** | REST API / Webhook HTTP POST |
 
 ---
