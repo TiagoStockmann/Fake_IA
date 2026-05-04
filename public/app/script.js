@@ -47,6 +47,9 @@ window.addEventListener("DOMContentLoaded", () => {
   const displayEl = document.getElementById("displayUser");
   if (displayEl && user) displayEl.textContent = user;
 
+  /* Renderizar histórico */
+  renderHistory();
+
   /* Contador + auto-resize do textarea */
   const textarea = document.getElementById("texto");
   textarea.addEventListener("input", () => {
