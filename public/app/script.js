@@ -251,6 +251,7 @@ async function verificar() {
     }
 
     renderResultado(respostaFinal);
+    saveToHistory(texto, respostaFinal);
   } catch (error) {
     loading.remove();
     console.error("Erro:", error);
