@@ -58,6 +58,7 @@ A interface gráfica (**Aurora Glamour UI**) se comunica com um workflow automat
                                                              │  tabela: fakeiadb    │
                                                              └─────────────────────┘
 ```
+<img width="1408" height="768" alt="Workflowgeral" src="https://github.com/user-attachments/assets/c6b30201-7f69-47fd-9ac1-594aa30b9a41" />
 
 ---
 
@@ -109,6 +110,10 @@ Preserva user  │                                                          │
                                                           [Respond to Webhook]
                                                           Retorna análise ao frontend
 ```
+
+<img width="1408" height="768" alt="Fluxon8n" src="https://github.com/user-attachments/assets/eb9d25ae-6cd1-4c85-aeb1-ed37f4748913" />
+
+
 
 ### Descrição de Cada Nó
 
@@ -326,7 +331,6 @@ O endpoint `/webhook/fakenews` está aberto sem nenhum tipo de autenticação (t
 |---|---|---|
 | Adicionar nó de busca do histórico no Postgres antes do AI Agent | Alta — ativa a memória real por usuário | Alta |
 | Adicionar tratamento de erro em todos os nós críticos | Alta — evita falhas silenciosas | Alta |
-| Ativar o workflow (`active: true`) | Necessário para funcionar | Alta |
 | Adicionar autenticação no webhook (header token) | Alta — segurança | Média |
 | Consolidar a lógica de detecção de tipo em um único nó | Média — simplifica manutenção | Média |
 | Adicionar rate limiting por usuário | Média — evita abuso | Média |
