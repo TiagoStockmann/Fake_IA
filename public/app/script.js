@@ -204,6 +204,7 @@ async function enviarImagem(base64, nome, mimeType) {
     }
 
     renderResultado(respostaFinal);
+    saveToHistory("📷 " + nome, respostaFinal);
   } catch (error) {
     loading.remove();
     console.error("Erro:", error);
