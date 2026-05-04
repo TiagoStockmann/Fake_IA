@@ -1,4 +1,4 @@
-# 🔍 FakeAI — Detector de Fake News com IA
+# 🔍 FakeIA — Detector de Fake News com IA
 
 > Sistema inteligente de verificação de notícias e detecção de desinformação, com suporte a texto, imagens e links, alimentado por GPT-4o-mini via n8n.
 
