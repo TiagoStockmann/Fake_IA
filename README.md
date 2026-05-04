@@ -359,19 +359,16 @@ fact-checking antes de repassar qualquer informação sobre medidas econômicas.
 
 ### ⚠️ Problemas Identificados
 
-**1. Workflow inativo**
-O workflow está com `"active": false`. É necessário ativá-lo no painel do n8n para que o webhook funcione em produção.
-
-**2. Memória de usuário sem recuperação**
+**1. Memória de usuário sem recuperação**
 O prompt do AI Agent menciona o uso de "memória anterior do usuário", mas o workflow **não recupera o histórico do banco de dados** antes de chamar a IA. Os registros são salvos no PostgreSQL, mas nunca são buscados e reinjetados no contexto da conversa, tornando a memória ineficaz.
 
-**3. Duplicidade na detecção de imagem**
+**2. Duplicidade na detecção de imagem**
 Existe uma lógica duplicada para imagens: o nó `If` detecta `tipo === "imagem"` e trata pelo caminho superior, mas o nó `Code in JavaScript` (caminho inferior) também detecta base64 de imagem. Se o campo `tipo` não for enviado como "imagem" mas o `texto` for um base64, pode haver conflito de rotas.
 
-**4. Ausência de tratamento de erros**
+**3. Ausência de tratamento de erros**
 Não há nós de erro configurados (`onError`) para os casos em que o Jina.ai esteja indisponível, a OpenAI retorne erro ou o banco de dados falhe. O workflow simplesmente quebraria sem devolver uma mensagem amigável ao usuário.
 
-**5. Sem autenticação no webhook**
+**4. Sem autenticação no webhook**
 O endpoint `/webhook/fakenews` está aberto sem nenhum tipo de autenticação (token, API key ou Basic Auth), expondo o serviço a uso não autorizado e abuso.
 
 ### ✅ Melhorias Sugeridas
@@ -380,7 +377,6 @@ O endpoint `/webhook/fakenews` está aberto sem nenhum tipo de autenticação (t
 |---|---|---|
 | Adicionar nó de busca do histórico no Postgres antes do AI Agent | Alta — ativa a memória real por usuário | Alta |
 | Adicionar tratamento de erro em todos os nós críticos | Alta — evita falhas silenciosas | Alta |
-| Ativar o workflow (`active: true`) | Necessário para funcionar | Alta |
 | Adicionar autenticação no webhook (header token) | Alta — segurança | Média |
 | Consolidar a lógica de detecção de tipo em um único nó | Média — simplifica manutenção | Média |
 | Adicionar rate limiting por usuário | Média — evita abuso | Média |
